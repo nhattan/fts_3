@@ -5,7 +5,7 @@ class CreateUsers < ActiveRecord::Migration
       t.string :email
       t.string :password_digest
       t.string :remember_token
-      t.boolean :supervisor
+      t.integer :supervisor, default: 0
 
       t.timestamps
     end
