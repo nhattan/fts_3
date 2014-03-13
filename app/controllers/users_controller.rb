@@ -15,10 +15,26 @@ class UsersController < ApplicationController
    def edit
   	#redirect_back_or current_user
     @user = User.find params[:id]
-    redirect_to root_path unless current_user? @user
+    unless current_user? @user
+      flash[:error] = "You can't edit this user"
+      redirect_to root_path
+    end
+  end
+
+  def update
+   @user = User.find params[:id] 
+    @user.validate_password = true   
+    if @user.update_attributes user_params
+      flash[:success] = "Profile updated"
+      redirect_to admin_user_path(@user)
+    else
+      flash[:error] = "input error"
+      render 'edit'
+    end
   end
 
   def destroy
+    redirect_to root_url
   end
 
   private
@@ -28,5 +44,9 @@ class UsersController < ApplicationController
         store_location
         redirect_to signin_path, notice: "Please sign in."
       end
+    end
+
+    def user_params
+      params.require(:user).permit(:name, :email, :password, :password_confirmation)
     end
 end

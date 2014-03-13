@@ -23,24 +23,25 @@ course_list.each do |name, description|
   Course.create(name: name, description: description)
 end
 
-subject_list1 = {
+subject_list = {
   "Rails" => "Learn about rails",
   "Git" => "Learn about git",
-  "MySQL" => "Learn about MySQL"
+  "MySQL" => "Learn about MySQL",
+  "POSGRESQL" => "Learn about POSGRESQL",
+  "iOS" => "Learn about iOS",
+  "AdvancedGit" => "Learn about advanced git"
 }
 
-subject_list1.each do |name, description|
-  Subject.create(course_id: 1, name: name, description: description)
+subject_list.each do |name, description|
+  Subject.create(name: name, description: description)
 end
 
-subject_list2 = {
-  "iOS" => "Learn about iOS",
-  "AdvancedGit" => "Learn about advanced git",
-  "POSGRESQL" => "Learn about POSGRESQL"
-}
+(1..4).each do |i|
+  CourseSubject.create(course_id: 1, subject_id: i)
+end
 
-subject_list2.each do |name, description|
-  Subject.create(course_id: 2, name: name, description: description)
+(3..6).each do |i|
+  CourseSubject.create(course_id: 2, subject_id: i)
 end
 
 task_list = {
@@ -50,12 +51,9 @@ task_list = {
 }
 
 task_list.each do |name, description|
-  Task.create(subject_id: 1, name: name, description: description)
-  Task.create(subject_id: 2, name: name, description: description)
-  Task.create(subject_id: 3, name: name, description: description)
-  Task.create(subject_id: 4, name: name, description: description)
-  Task.create(subject_id: 5, name: name, description: description)
-  Task.create(subject_id: 6, name: name, description: description)
+  (1..6).each do |i|
+    Task.create(subject_id: i, name: name, description: description)
+  end
 end
 
 (2..10).each do |i|
