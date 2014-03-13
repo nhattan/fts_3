@@ -1,0 +1,11 @@
+<% provide(:title, @course.name) %>
+<h1><%= @course.name %></h1>
+
+<% @course_subjects.each do |course_subject| %>
+  <% if !course_subject.subject.nil? %>
+    <div>
+      <%= link_to course_subject.subject.name, 
+        admin_course_path(@course) %>
+    </div>
+  <% end %>
+<% end %>

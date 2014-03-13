@@ -1,0 +1,17 @@
+<% provide(:title, "All Courses") %>
+<h1>Courses</h1>
+
+<h2><%= link_to "Create new course", new_admin_course_path %></h2>
+
+<ul class="courses">
+  <% @courses.each do |course| %>
+    <li>
+      <div><%= link_to course.name, admin_course_path(course) %></div>
+      <div><%= course.description %></div>
+      <div>
+        <%= link_to "edit", edit_admin_course_path(course) %>
+        <%= render 'shared/delete_form', object: admin_course_path(course)  %>
+      </div>
+    </li>
+  <% end %>
+</ul>
