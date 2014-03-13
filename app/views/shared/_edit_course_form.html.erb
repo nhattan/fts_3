@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="span6 offset3">
+    <%= form_for [:admin, @course] do |f| %>
+      <%= render 'shared/error_messages', object: f.object %>
+      <%= f.text_field :name, placeholder: "Name" %>
+      <%= f.text_area :description, placeholder: "Description" %>
+
+      <div>
+        <%= f.fields_for :course_subjects do |builder| %>
+          <% subject = builder.object.subject %>
+          <div>
+            <%= builder.check_box :subject_id, {}, subject.id %>
+            <%= subject.name %>
+          </div>
+        <% end %>
+      </div>
+      <br>
+      <%= f.submit "Save", class: "btn btn-large btn-primary" %>
+    <% end %>
+  </div>
+</div>

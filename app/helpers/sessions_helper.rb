@@ -52,4 +52,8 @@ module SessionsHelper
   def normal_user? user
     user.supervisor == 0
   end
+
+  def admin_user
+    current_user.supervisor == 1
+  end
 end
