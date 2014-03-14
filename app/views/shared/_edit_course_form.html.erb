@@ -9,8 +9,10 @@
         <%= f.fields_for :course_subjects do |builder| %>
           <% subject = builder.object.subject %>
           <div>
+            <% if !subject.nil? %>
             <%= builder.check_box :subject_id, {}, subject.id %>
             <%= subject.name %>
+            <% end %>
           </div>
         <% end %>
       </div>
