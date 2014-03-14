@@ -1,0 +1,12 @@
+<% provide(:title, @subject.name) %>
+<h1><%= @subject.name %></h1>
+<h2><%= @subject.description %></h2>
+
+<ol id="subject">
+  <% @tasks.each do |task| %>
+    <li>
+      <p><%= task.name %><p>
+      <p><%= task.description %></p>
+    </li>
+  <% end %>
+</ol>
