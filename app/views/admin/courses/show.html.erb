@@ -5,7 +5,7 @@
   <% if !course_subject.subject.nil? %>
     <div>
       <%= link_to course_subject.subject.name, 
-        admin_course_path(@course) %>
+        admin_subject_path(course_subject.subject) %>
     </div>
   <% end %>
 <% end %>

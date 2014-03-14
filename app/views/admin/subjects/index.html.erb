@@ -1,0 +1,17 @@
+<% provide(:title, "All Subjects") %>
+<h1>Subjects</h1>
+
+<h2><%= link_to "Create new subject", new_admin_subject_path %></h2>
+
+<ul class="subjects">
+  <% @subjects.each do |subject| %>
+    <li>
+      <div><%= link_to subject.name, admin_subject_path(subject) %></div>
+      <div><%= subject.description %></div>
+      <div>
+        <%= link_to "edit", edit_admin_subject_path(subject) %>
+        <%= render 'shared/delete_form', object: admin_subject_path(subject)  %>
+      </div>
+    </li>
+  <% end %>
+</ul>

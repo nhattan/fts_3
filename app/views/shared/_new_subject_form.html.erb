@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="span6 offset3">
+    <%= form_for @subject, url: admin_subjects_path do |f| %>
+      <%= render 'shared/error_messages', object: f.object %>
+      <p>
+        <%= f.text_field :name, placeholder: "Name" %>
+        <%= f.text_area :description, placeholder: "Description" %>
+      </p>
+
+      Tasks:
+      <%= f.fields_for :tasks do |builder| %>
+        <%= render 'task', f: builder %>
+      <% end %>
+
+      <p><%= f.submit "Save", class: "btn btn-large btn-primary" %></p>
+    <% end %>
+  </div>
+</div>
