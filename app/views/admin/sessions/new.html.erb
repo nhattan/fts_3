@@ -2,16 +2,16 @@
 <h1>Login with admin user</h1>
 
 <div class="row">
-	<div class="span6 offset3">
-		<%= form_for(:session, url: admin_sessions_path) do |f| %>
-			<%= f.label :email %>
-	        <%= f.text_field :email %>
+    <div class="span6 offset3">
+        <%= form_for(:session, url: admin_sessions_path) do |f| %>
+          <%= f.label :email %>
+          <%= f.text_field :email %>
 
-	        <%= f.label :password %>
-	        <%= f.password_field :password %>
-	        <br />
-	        <%= f.submit "Sign in", class: "btn btn-large btn-primary" %>
-		<% end %>
-		<p> Admin user? <%= link_to "Login with admin user", admin_signin_path %> </p>
-	</div>
+          <%= f.label :password %>
+          <%= f.password_field :password %>
+          <br />
+          <%= f.submit "Sign in", class: "btn btn-large btn-primary" %>
+        <% end %>
+        <p> Admin user? <%= link_to "Login with admin user", admin_signin_path %> </p>
+    </div>
 </div>

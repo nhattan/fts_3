@@ -17,6 +17,21 @@ class Admin::UsersController < ApplicationController
   	@user = User.find params[:id]
   end
 
+  def update    
+    @user = User.find params[:id] 
+    
+    @user.validate_password = true  
+    if @user.update_attributes user_params
+      flash[:success] = "Profile updated"
+      @user.validate_password = false
+      redirect_to admin_user_path(@user)
+    else
+      flash[:error] = "input error"
+      @user.validate_password = false
+      render 'edit'
+    end
+  end
+
   def destroy
   end
 
@@ -29,5 +44,8 @@ class Admin::UsersController < ApplicationController
     end
     def correct_user
       redirect_to(root_path) unless admin_user?(current_user)
+    end
+    def user_params
+      params.require(:user).permit(:name, :email, :password, :password_confirmation)
     end
 end
