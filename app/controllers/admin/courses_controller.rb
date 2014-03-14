@@ -23,7 +23,7 @@ class Admin::CoursesController < ApplicationController
     @course = Course.new course_params
     if @course.save
       flash[:success] = "Course created!"
-      redirect_to admin_courses_url
+      redirect_to admin_course_url @course
     else
       render 'new'
     end
@@ -37,7 +37,7 @@ class Admin::CoursesController < ApplicationController
     @course = Course.find params[:id]
     if @course.update_attributes course_params
       flash[:success] = "Updated"
-      redirect_to admin_courses_url
+      redirect_to admin_course_url @course
     else
       render 'edit'
     end
@@ -53,7 +53,7 @@ class Admin::CoursesController < ApplicationController
   private
 
     def course_params
-      params.require(:course).permit(:name, :description, 
+      params.require(:course).permit(:name, :description, :start_at, 
         course_subjects_attributes: [:id, :course_id, :subject_id])
     end
 end
