@@ -1,22 +1,27 @@
 <% provide(:title, @course.name) %>
 <h1><%= @course.name %></h1>
+<div class="row">
+  <div class="span6 offset1">
+    <% @course_subjects.each do |course_subject| %>
+      <% unless course_subject.subject.nil? %>
+        <div>
+          <%= link_to course_subject.subject.name, 
+            admin_subject_path(course_subject.subject) %>
+        </div>
+      <% end %>
+    <% end %>
 
-<% @course_subjects.each do |course_subject| %>
-  <% if !course_subject.subject.nil? %>
-    <div>
-      <%= link_to course_subject.subject.name, 
-        admin_subject_path(course_subject.subject) %>
-    </div>
-  <% end %>
-<% end %>
+    <%if @course.start_at.nil? %>
+      <%= form_for [:admin, @course] do |f| %>
+        <%= render 'shared/error_messages', object: f.object %>
+        <div>This course dosen't start, click start to start thi course</div>
+        <%= f.submit "Start", class: "btn btn-large btn-primary" %>
+      <% end %>
+    <% else %>
+      <div><h3>This course is started</h3></div>
+    <% end %>
+  </div>
+</div>
 
-<%if @course.start_at.nil? %>
-  <%= form_for [:admin, @course] do |f| %>
-    <%= render 'shared/error_messages', object: f.object %>
-    <%= f.hidden_field :start_at, value: Date.today.to_s %>
-    This course dosen't start, click start to start thi course<br/>
-    <%= f.submit "Start", class: "btn btn-large btn-primary" %>
-  <% end %>
-<% else %>
-  <h2>This course is started</h2>
-<% end %>
+<div><%= link_to "Trainee in Courses", admin_course_trainees_path(@course) %></div>
+<div><%= link_to "Supervisor in Courses", admin_course_supervisors_path(@course) %></div>

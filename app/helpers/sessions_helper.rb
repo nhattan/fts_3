@@ -54,6 +54,6 @@ module SessionsHelper
   end
 
   def admin_user
-    current_user.supervisor == 1
+    redirect_to current_user unless  admin_user? current_user
   end
 end
