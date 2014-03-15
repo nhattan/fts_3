@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140313032501) do
+ActiveRecord::Schema.define(version: 20140314085612) do
 
   create_table "course_subjects", force: true do |t|
     t.integer  "course_id"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20140313032501) do
     t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "start_at"
   end
 
   add_index "courses", ["name"], name: "index_courses_on_name"
@@ -62,6 +63,7 @@ ActiveRecord::Schema.define(version: 20140313032501) do
     t.boolean  "finish"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "start_at"
   end
 
   add_index "user_courses", ["course_id"], name: "index_user_courses_on_course_id"

@@ -9,3 +9,14 @@
     </div>
   <% end %>
 <% end %>
+
+<%if @course.start_at.nil? %>
+  <%= form_for [:admin, @course] do |f| %>
+    <%= render 'shared/error_messages', object: f.object %>
+    <%= f.hidden_field :start_at, value: Date.today.to_s %>
+    This course dosen't start, click start to start thi course<br/>
+    <%= f.submit "Start", class: "btn btn-large btn-primary" %>
+  <% end %>
+<% else %>
+  <h2>This course is started</h2>
+<% end %>
