@@ -16,6 +16,17 @@ class User < ActiveRecord::Base
   validates :email, presence: true, format: {with: VALID_EMAIL_REGEX}, uniqueness: { case_sensitive: false }
   validates :password, presence: true, length: {minimum: 6}, if: :validate_password
   validates :password_confirmation, presence: true, if: :validate_password
+
+  scope :trainee_not_enroll_to_courses, lambda { |course|
+    sql = "(SELECT user_id FROM trainee_courses WHERE course_id = #{course.id})"
+    User.where("users.id NOT IN #{sql} and users.supervisor == 0")
+  }
+  
+  scope :supervisor_not_enroll_to_courses, lambda { |course|
+    sql = "(SELECT user_id FROM supervisor_courses WHERE course_id = #{course.id})"
+    User.where("users.id NOT IN #{sql} and users.supervisor > 0")
+  }
+
   private
     def create_remember_token
       self.remember_token = SecureRandom.urlsafe_base64

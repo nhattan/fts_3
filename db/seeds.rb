@@ -5,6 +5,7 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
 User.create(name: "Admin", email: "admin@example.com", 
   password: "foobar", password_confirmation: "foobar", supervisor: 1)
 
@@ -56,7 +57,7 @@ task_list.each do |name, description|
 end
 
 (2..10).each do |i|
-  UserCourse.create(user_id: i, course_id: 1, finish: 0)
+  TraineeCourse.create(user_id: i, course_id: 1, finish: 0)
 
   (1..4).each do |j|
     UserSubject.create(user_id: i, subject_id: j, finish: 0)
@@ -68,7 +69,7 @@ end
 end
 
 (11..20).each do |i|
-  UserCourse.create(user_id: i, course_id: 2, finish: 1, start_at: DateTime.now)
+  TraineeCourse.create(user_id: i, course_id: 2, finish: 0)
 
   (3..6).each do |j|
     UserSubject.create(user_id: i, subject_id: j, finish: 1)
