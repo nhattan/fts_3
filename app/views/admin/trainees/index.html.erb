@@ -1,0 +1,23 @@
+<div class="span5 offset1">
+    <div><strong>Trainee in course</strong></div>
+    <%= will_paginate @trainee_enroll_courses %>
+    <% @trainee_enroll_courses.each do |user| %>
+    	<div>
+      <%= link_to user.name, user %>
+      <%= link_to 'Remove', admin_course_trainee_path(@course, id: user.id), method: :delete %>
+      </div>
+    <% end %>
+
+    <div><strong>Add trainee in course</strong></div>
+    <%= will_paginate @trainee_not_enroll_courses %>
+      <div>
+        
+          <% @trainee_not_enroll_courses.each do |user| %>
+            <div>
+            	<%= link_to user.name, user %>
+            	<%= link_to 'Add', admin_course_trainees_path(@course.id, id: user.id), method: :create %>              
+            </div>
+          <% end %>
+      </div>
+  </div>
+</div>

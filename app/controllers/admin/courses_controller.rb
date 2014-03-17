@@ -35,6 +35,19 @@ class Admin::CoursesController < ApplicationController
 
   def update
     @course = Course.find params[:id]
+
+    if params[:commit].to_s == "Start"
+      params[:course] = {start_at: Date.today.to_s}
+    end
+
+    if params[:course][:course_subject] != nil
+      params[:course][:course_subject].each do |_, value|
+        if value.to_s != "0"
+          @course.user_courses.create user_id: value
+        end
+      end
+    end
+
     if @course.update_attributes course_params
       flash[:success] = "Updated"
       redirect_to admin_course_url @course

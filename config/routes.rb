@@ -11,6 +11,8 @@ Fts3::Application.routes.draw do
   match "/signout", to: "sessions#destroy",      via: :delete
 
   resources "users"
+  resources "courses"
+  
   namespace :admin do
     match "/signin", to: "sessions#new",        via: :get
     match "/signout", to: "sessions#destroy",   via: :post
@@ -18,6 +20,11 @@ Fts3::Application.routes.draw do
     resources "users"
     resources "courses"
     resources "subjects"
+
+    resources "courses" do
+      resources "trainees", only: [:index, :create, :destroy]
+      resources "supervisors", only: [:index, :create, :destroy]
+    end
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
