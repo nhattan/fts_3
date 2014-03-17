@@ -1,0 +1,21 @@
+<% provide(:title, @course.name) %>
+<h1><%= @course.name %></h1>
+<h2><%= @course.description %></h2  >
+
+<div class="center">
+  <div class="btn-group">
+    <% @course_subjects.each do |course_subject| %>
+      <% unless course_subject.subject.nil? %>
+        <button type="button" class="btn btn-default">
+          <%= course_subject.subject.name %>
+        </button>
+      <% end %>
+    <% end %>
+  </div>
+
+  <% unless @user_course.nil? %>
+    <%= form_for @course do |f| %>
+      <%= f.submit "Start", class: "btn btn-large btn-primary" %>
+    <% end %>
+  <% end %>
+</div>
