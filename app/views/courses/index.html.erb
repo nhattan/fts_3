@@ -1,0 +1,11 @@
+<% provide(:title, "All Courses") %>
+<h1>Courses</h1>
+
+<ul class="courses">
+  <% @courses.each do |course| %>
+    <li>
+      <div><%= link_to course.name, course_path(course) %></div>
+      <div><%= course.description %></div>
+    </li>
+  <% end %>
+</ul>

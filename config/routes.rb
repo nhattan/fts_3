@@ -12,7 +12,6 @@ Fts3::Application.routes.draw do
 
   resources "users"
   resources "courses"
-  
   namespace :admin do
     match "/signin", to: "sessions#new",        via: :get
     match "/signout", to: "sessions#destroy",   via: :post

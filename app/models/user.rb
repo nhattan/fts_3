@@ -3,6 +3,8 @@ class User < ActiveRecord::Base
 
   attr_accessor :validate_password
 
+  has_many :user_courses, dependent: :destroy
+  has_many :user_subjects, dependent: :destroy
   before_save { |user| user.email = email.downcase }
   before_save :create_remember_token
 
@@ -13,6 +15,6 @@ class User < ActiveRecord::Base
   validates :password_confirmation, presence: true, if: :validate_password
   private
     def create_remember_token
-        self.remember_token = SecureRandom.urlsafe_base64
+      self.remember_token = SecureRandom.urlsafe_base64
     end
 end

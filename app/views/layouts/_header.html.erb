@@ -5,9 +5,9 @@
       <nav>
         <ul class="nav pull-right">
           <li><%= link_to "Help", help_path %></li>
-          <li><%= link_to "Courses", admin_courses_path %></li>
           <% if signed_in? %>
             <% if admin_user? current_user %>
+              <li><%= link_to "Courses", admin_courses_path %></li>
               <li><%= link_to "Subjects", admin_subjects_path %></li>
               <li><%= link_to "Admin", admin_users_path %></li>
                   <li id="fat-menu" class="dropdown">
@@ -25,6 +25,7 @@
                   </li>
              <% end %>
               <% if normal_user? current_user %>
+                  <li><%= link_to "Courses", courses_path %></li>
                   <li><%= link_to "Member", current_user %></li>
                   <li id="fat-menu" class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
