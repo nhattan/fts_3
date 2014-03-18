@@ -5,16 +5,6 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-User.delete_all
-Course.delete_all
-Subject.delete_all
-Task.delete_all
-CourseSubject.delete_all
-UserCourse.delete_all
-UserSubject.delete_all
-UserTask.delete_all
-Report.delete_all
-
 User.create(name: "Admin", email: "admin@example.com", 
   password: "foobar", password_confirmation: "foobar", supervisor: 1)
 
@@ -68,19 +58,19 @@ end
 (2..10).each do |i|
   UserCourse.create(user_id: i, course_id: 1, finish: 0)
 
-  (1..3).each do |j|
-    UserSubject.create(user_id: i, subject_id: j, finish: 1)
+  (1..4).each do |j|
+    UserSubject.create(user_id: i, subject_id: j, finish: 0)
   end
 
   (1..3).each do |j|
-    UserTask.create(user_id: i, task_id: j, finish: 1)
+    UserTask.create(user_id: i, task_id: j, finish: 0)
   end
 end
 
 (11..20).each do |i|
-  UserCourse.create(user_id: i, course_id: 2, finish: 0)
+  UserCourse.create(user_id: i, course_id: 2, finish: 1, start_at: DateTime.now)
 
-  (1..3).each do |j|
+  (1..4).each do |j|
     UserSubject.create(user_id: i, subject_id: j, finish: 1)
   end
 
@@ -100,3 +90,6 @@ report.each do |title, content|
     Report.create(user_id: i, title: title, content: content)
   end
 end
+
+User.create(name: "Admin2", email: "admin2@example.com", 
+  password: "foobar", password_confirmation: "foobar", supervisor: 1)
