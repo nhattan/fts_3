@@ -49,7 +49,7 @@ module SessionsHelper
     user.supervisor > 0
   end
 
-  def normal_user? user
+  def trainee_user? user
     user.supervisor == 0
   end
 
@@ -57,7 +57,7 @@ module SessionsHelper
     redirect_to(root_url) unless current_user.supervisor == 1
   end
 
-  def normal_user
+  def trainee_user
     redirect_to(root_url) unless current_user.supervisor == 0
   end
 end

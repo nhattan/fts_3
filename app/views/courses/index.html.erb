@@ -2,10 +2,10 @@
 <h1>Courses</h1>
 
 <ul class="courses">
-  <% @courses.each do |course| %>
+  <% @user_courses.each do |user_course| %>
     <li>
-      <div><%= link_to course.name, course_path(course) %></div>
-      <div><%= course.description %></div>
+      <% course = user_course.course %>
+      <div><%= link_to course.name, course %></div>
     </li>
   <% end %>
 </ul>

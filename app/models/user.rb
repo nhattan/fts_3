@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   attr_accessor :validate_password
 
   has_many :user_courses, dependent: :destroy
+  has_many :user_subjects, dependent: :destroy
   before_save { |user| user.email = email.downcase }
   before_save :create_remember_token
 
