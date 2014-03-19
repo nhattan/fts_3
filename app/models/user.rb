@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
 
   has_many :user_courses, dependent: :destroy
   has_many :user_subjects, dependent: :destroy
+  has_many :user_tasks, dependent: :destroy
+  
   before_save { |user| user.email = email.downcase }
   before_save :create_remember_token
 
