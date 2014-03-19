@@ -24,7 +24,7 @@
                     </ul>
                   </li>
              <% end %>
-              <% if normal_user? current_user %>
+              <% if trainee_user? current_user %>
                   <li><%= link_to "Courses", courses_path %></li>
                   <li><%= link_to "Member", current_user %></li>
                   <li id="fat-menu" class="dropdown">

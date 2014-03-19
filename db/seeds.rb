@@ -60,22 +60,22 @@ end
 
   (1..4).each do |j|
     UserSubject.create(user_id: i, subject_id: j, finish: 0)
-  end
 
-  (1..3).each do |j|
-    UserTask.create(user_id: i, task_id: j, finish: 0)
+    (1..3).each do |k|
+      UserTask.create(user_id: i, task_id: k, finish: 0)
+    end
   end
 end
 
 (11..20).each do |i|
   UserCourse.create(user_id: i, course_id: 2, finish: 1, start_at: DateTime.now)
 
-  (1..4).each do |j|
+  (3..6).each do |j|
     UserSubject.create(user_id: i, subject_id: j, finish: 1)
-  end
 
-  (1..3).each do |j|
-    UserTask.create(user_id: i, task_id: j, finish: 1)
+    (1..3).each do |k|
+      UserTask.create(user_id: i, task_id: k, finish: 1)
+    end
   end
 end
 

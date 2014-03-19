@@ -1,18 +1,65 @@
-<h1>Profile</h1>
-<div class="row">
-	<aside class="span5">
-		<h2>
-		<%= gravatar_for @user %>
-		Name: <%= link_to @user.name, @user %>,
-		 <% if admin_user? @user %>
-			Admin user
-		<% else %>
-			<% if current_user? @user %>
-				Normal user, <%= link_to "Edit", edit_admin_user_path(@user)%>
-			<% else %>
-				Normal user
-			<% end %>
-		<% end %>
-		</h2>
-	</aside>
+<% provide(:title, @user.name) %>
+
+<div class="center">
+  <%= gravatar_for @user %>
+  <h5><%= link_to @user.name, @user %></h5>
 </div>
+
+<table class="table table-hover">
+  <thead>
+    <td><strong>Learning</strong></td>
+    <td><strong>Status</strong></td>
+  </thead>
+
+  <% current_user.user_courses.each do |user_course| %>
+    <% if !user_course.start_at.nil? && user_course.finish?%>
+      <% course = user_course.course %>
+      <tr class="success">
+        <td><%= link_to course.name, course %></td>
+        <td>finished</td>
+      </tr>
+    <% elsif !user_course.start_at.nil? && !user_course.finish? %>
+      <tr class="error">
+        <td><%= link_to course.name, course %></td>
+        <td>in progress</td>
+      </tr>
+    <% elsif !user_course.start_at.nil? %>
+      <tr class="warning">
+        <td><%= link_to course.name, course %></td>
+        <td>started</td>
+      </tr>
+    <% end %>
+
+
+
+    <% current_user.user_subjects.each do |user_subject| %>
+      <% subject = user_subject.subject %>
+      <% if user_subject.finish? %>
+        <tr class="success">
+          <td><%= subject.name %></td>
+          <td>finished</td>
+        </tr>
+      <% else %>
+        <tr class="error">
+          <td><%= subject.name %></td>
+          <td>in progress</td>
+        </tr>
+      <% end %>
+    <% end %>
+
+    <% current_user.user_tasks.each do |user_task| %>
+      <% task = user_task.task %>
+      <% if user_task.finish? %>
+        <tr class="success">
+          <td><%= task.name %></td>
+          <td>finished</td>
+        </tr>
+      <% else %>
+        <tr class="error">
+          <td><%= task.name %></td>
+          <td>in progress</td>
+        </tr>
+      <% end %>
+    <% end %>
+  <% end %>
+</table>
