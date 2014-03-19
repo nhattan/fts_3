@@ -11,8 +11,8 @@
     <td><strong>Status</strong></td>
   </thead>
 
-  <% current_user.user_courses.each do |user_course| %>
-    <% if !user_course.start_at.nil? && user_course.finish?%>
+  <% @user.user_courses.each do |user_course| %>
+    <% if !user_course.start_at.nil? && user_course.finish? %>
       <% course = user_course.course %>
       <tr class="success">
         <td><%= link_to course.name, course %></td>
@@ -30,9 +30,7 @@
       </tr>
     <% end %>
 
-
-
-    <% current_user.user_subjects.each do |user_subject| %>
+    <% @user.user_subjects.each do |user_subject| %>
       <% subject = user_subject.subject %>
       <% if user_subject.finish? %>
         <tr class="success">
@@ -47,7 +45,7 @@
       <% end %>
     <% end %>
 
-    <% current_user.user_tasks.each do |user_task| %>
+    <% @user.user_tasks.each do |user_task| %>
       <% task = user_task.task %>
       <% if user_task.finish? %>
         <tr class="success">
