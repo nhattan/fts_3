@@ -29,4 +29,16 @@
       </button>
     </div>
   <% end %>
+
+  <div class="row">
+    <div class="span6 offset3">
+      <h4>Users in this Course</h4>
+      <div>
+        <% @course.user_courses.each do |user_course| %>
+          <% user = user_course.user %>
+          <%= link_to gravatar_for(user, size: 40), user %>
+        <% end %>
+      </div>
+    </aside>
+  </div>
 </div>
