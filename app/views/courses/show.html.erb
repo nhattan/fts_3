@@ -39,6 +39,49 @@
           <%= link_to gravatar_for(user, size: 40), user %>
         <% end %>
       </div>
-    </aside>
+
+      <h4>Activities</h4>
+      <div>
+        <% @user_course.versions.each do |version| %>
+          <% if version.event == "create" %>
+            You started
+            <%= @user_course.course.name %>
+            at
+            <%= version.created_at.to_date %>
+          <% elsif version.event == "update" %>
+            You finished
+            <%= @user_course.course.name %>
+            at
+            <%= version.created_at.to_date %>
+          <% end %>
+        <% end %>
+      </div>
+
+      <% current_user.user_subjects.each do |user_subject| %>
+        <div class="courses">
+          <% user_subject.versions.each do |version| %>
+            <% if version.event == "update" %>
+              You finished
+              <%= user_subject.subject.name %>
+              at
+              <%= version.created_at.to_date %>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+
+      <% current_user.user_tasks.each do |user_task| %>
+        <div class="courses">
+          <% user_task.versions.each do |version| %>
+            <% if version.event == "update" %>
+              You finished
+              <%= user_task.task.name %>
+              at
+              <%= version.created_at.to_date %>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>

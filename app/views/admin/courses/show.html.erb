@@ -1,7 +1,7 @@
 <% provide(:title, @course.name) %>
 <h1><%= @course.name %></h1>
 <div class="row">
-  <div class="span6 offset1">
+  <div class="span6 offset3">
     <% @course_subjects.each do |course_subject| %>
       <% unless course_subject.subject.nil? %>
         <div>
@@ -20,8 +20,66 @@
     <% else %>
       <div><h3>This course is started</h3></div>
     <% end %>
+
+    <div>
+      <%= link_to "Trainee in Courses", admin_course_trainees_path(@course) %></div>
+    <div>
+      <%= link_to "Supervisor in Courses", admin_course_supervisors_path(@course) %>
+    </div>
+
+    <div class="center">
+      <h4>Activities</h4>
+      <% @course.user_courses.each do |user_course| %>
+        <% user = user_course.user %>
+        <% user_course.versions.each do |version| %>
+          <div>
+            <% if version.event == "update" %>
+              <%= link_to user.name, user %>
+              finished
+              <%= user_course.course.name %>
+              at
+              <%= version.created_at.to_date %>
+            <% else %>
+              <%= link_to user.name, user %>
+              started
+              <%= user_course.course.name %>
+              at
+              <%= version.created_at.to_date %>
+            <% end %>
+          </div>
+        <% end %>
+
+        <% user.user_subjects.each do |user_subject| %>
+          <% user = user_subject.user %>
+          <% user_subject.versions.each do |version| %>
+            <div>
+              <% if version.event == "update" %>
+                <%= link_to user.name, user %>
+                finished
+                <%= user_subject.subject.name %>
+                at
+                <%= version.created_at.to_date %>
+              <% end %>
+            </div>
+          <% end %>
+          
+          <% user.user_tasks.each do |user_task| %>
+            <% user = user_task.user %>
+            <% user_task.versions.each do |version| %>
+              <div>
+                <% if version.event == "update" %>
+                  <%= link_to user.name, user %>
+                  finised
+                  <%= user_task.task.name %>
+                  at
+                  <%= version.created_at.to_date %>
+                <% end %>
+            </div>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
   </div>
 </div>
 
-<div><%= link_to "Trainee in Courses", admin_course_trainees_path(@course) %></div>
-<div><%= link_to "Supervisor in Courses", admin_course_supervisors_path(@course) %></div>
