@@ -9,6 +9,7 @@ class Admin::CoursesController < ApplicationController
   def show
     @course = Course.find params[:id]
     @course_subjects = @course.course_subjects
+    @activities = @course.activities
   end
 
   def new
@@ -43,7 +44,7 @@ class Admin::CoursesController < ApplicationController
     if params[:course][:course_subject] != nil
       params[:course][:course_subject].each do |_, value|
         if value.to_s != "0"
-          @course.user_courses.create user_id: value
+          @course.trainee_courses.create user_id: value
         end
       end
     end

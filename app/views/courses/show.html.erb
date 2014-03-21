@@ -40,47 +40,25 @@
         <% end %>
       </div>
 
-      <h4>Activities</h4>
-      <div>
-        <% @trainee_course.versions.each do |version| %>
-          <% if version.event == "create" %>
-            You started
-            <%= @trainee_course.course.name %>
-            at
-            <%= version.created_at.to_date %>
-          <% elsif version.event == "update" %>
-            You finished
-            <%= @trainee_course.course.name %>
-            at
-            <%= version.created_at.to_date %>
+      <h4>Your activities</h4>
+      <% @activities.each do |activity| %>
+        <% if current_user?(activity.user) %>
+          <% if activity.in_course? %>
+            <div>
+              <% if activity.updating && !activity.object.finish %>
+                You started
+                <%= @course.name %>
+                at
+                <%= activity.created_at.to_date %>
+              <% elsif activity.object.finish %>
+                You finished
+                <%= @course.name %>
+                at
+                <%= activity.created_at.to_date %>
+              <% end %>
+            </div>
           <% end %>
         <% end %>
-      </div>
-
-      <% current_user.user_subjects.each do |user_subject| %>
-        <div class="courses">
-          <% user_subject.versions.each do |version| %>
-            <% if version.event == "update" %>
-              You finished
-              <%= user_subject.subject.name %>
-              at
-              <%= version.created_at.to_date %>
-            <% end %>
-          <% end %>
-        </div>
-      <% end %>
-
-      <% current_user.user_tasks.each do |user_task| %>
-        <div class="courses">
-          <% user_task.versions.each do |version| %>
-            <% if version.event == "update" %>
-              You finished
-              <%= user_task.task.name %>
-              at
-              <%= version.created_at.to_date %>
-            <% end %>
-          <% end %>
-        </div>
       <% end %>
     </div>
   </div>

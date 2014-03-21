@@ -24,59 +24,28 @@
     <div><%= link_to "Trainee in Courses", edit_admin_course_assign_trainees_path(@course) %></div>
     <div><%= link_to "Supervisor in Courses", edit_admin_course_assign_supervisors_path(@course) %></div>
 
-    <div class="center">
-      <h4>Activities</h4>
-      <% @course.trainee_courses.each do |trainee_course| %>
-        <% user = trainee_course.user %>
-        <% trainee_course.versions.each do |version| %>
+    <h5>Users Activities</h5>
+    <% @activities.each do |activity| %>
+      <% if activity.in_course? %>
+        <% unless admin_user? activity.user %>
           <div>
-            <% if version.event == "update" %>
-              <%= link_to user.name, user %>
-              finished
-              <%= trainee_course.course.name %>
-              at
-              <%= version.created_at.to_date %>
-            <% else %>
-              <%= link_to user.name, user %>
+            <% if activity.updating && !activity.object.finish %>
+              <%= link_to activity.user.name, activity.user %>
               started
-              <%= trainee_course.course.name %>
+              <%= @course.name %>
               at
-              <%= version.created_at.to_date %>
+              <%= activity.created_at.to_date %>
+            <% elsif activity.object.finish %>
+              <%= link_to activity.user.name, activity.user %>
+              finished
+              <%= @course.name %>
+              at
+              <%= activity.created_at.to_date %>
             <% end %>
           </div>
         <% end %>
-
-        <% user.user_subjects.each do |user_subject| %>
-          <% user = user_subject.user %>
-          <% user_subject.versions.each do |version| %>
-            <div>
-              <% if version.event == "update" %>
-                <%= link_to user.name, user %>
-                finished
-                <%= user_subject.subject.name %>
-                at
-                <%= version.created_at.to_date %>
-              <% end %>
-            </div>
-          <% end %>
-          
-          <% user.user_tasks.each do |user_task| %>
-            <% user = user_task.user %>
-            <% user_task.versions.each do |version| %>
-              <div>
-                <% if version.event == "update" %>
-                  <%= link_to user.name, user %>
-                  finised
-                  <%= user_task.task.name %>
-                  at
-                  <%= version.created_at.to_date %>
-                <% end %>
-            </div>
-            <% end %>
-          <% end %>
-        <% end %>
       <% end %>
-    </div>
+    <% end %>
   </div>
 </div>
 

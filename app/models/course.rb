@@ -1,4 +1,5 @@
 class Course < ActiveRecord::Base
+  has_many :activities
   has_many :course_subjects, dependent: :destroy
   has_many :supervisor_courses, dependent: :destroy
   has_many :trainee_courses, dependent: :destroy

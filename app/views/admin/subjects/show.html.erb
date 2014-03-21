@@ -10,3 +10,18 @@
     </li>
   <% end %>
 </ol>
+
+<h5>Users Activities</h5>
+<% @subject.activities.each do |activity| %>
+  <% unless admin_user? activity.user %>
+    <div>
+      <% if activity.creating && activity.object.finish %>
+        <%= link_to activity.user.name, activity.user %>
+        finished
+        <%= activity.object.subject.name %>
+        at
+        <%= activity.created_at.to_date %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
