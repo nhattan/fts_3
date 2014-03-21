@@ -21,11 +21,8 @@
       <div><h3>This course is started</h3></div>
     <% end %>
 
-    <div>
-      <%= link_to "Trainee in Courses", admin_course_trainees_path(@course) %></div>
-    <div>
-      <%= link_to "Supervisor in Courses", admin_course_supervisors_path(@course) %>
-    </div>
+    <div><%= link_to "Trainee in Courses", edit_admin_course_assign_trainees_path(@course) %></div>
+    <div><%= link_to "Supervisor in Courses", edit_admin_course_assign_supervisors_path(@course) %></div>
 
     <div class="center">
       <h4>Activities</h4>
