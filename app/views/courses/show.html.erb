@@ -16,7 +16,7 @@
     <% end %>
   </div>
 
-  <% if @user_course.start_at.nil? %>
+  <% if @trainee_course.start_at.nil? %>
     <%= form_for @course do |f| %>
       <br>
       <%= f.submit "Start", class: "btn btn-large btn-primary" %>
@@ -34,23 +34,23 @@
     <div class="span6 offset3">
       <h4>Users in this Course</h4>
       <div>
-        <% @course.user_courses.each do |user_course| %>
-          <% user = user_course.user %>
+        <% @course.trainee_courses.each do |trainee_course| %>
+          <% user = trainee_course.user %>
           <%= link_to gravatar_for(user, size: 40), user %>
         <% end %>
       </div>
 
       <h4>Activities</h4>
       <div>
-        <% @user_course.versions.each do |version| %>
+        <% @trainee_course.versions.each do |version| %>
           <% if version.event == "create" %>
             You started
-            <%= @user_course.course.name %>
+            <%= @trainee_course.course.name %>
             at
             <%= version.created_at.to_date %>
           <% elsif version.event == "update" %>
             You finished
-            <%= @user_course.course.name %>
+            <%= @trainee_course.course.name %>
             at
             <%= version.created_at.to_date %>
           <% end %>
