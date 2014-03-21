@@ -1,4 +1,5 @@
 class Subject < ActiveRecord::Base
+  has_many :activities
   has_many :course_subjects
   has_many :user_subjects
   has_many :tasks, dependent: :destroy

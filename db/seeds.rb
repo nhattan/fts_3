@@ -61,32 +61,32 @@ end
 
   (1..4).each do |j|
     UserSubject.create(user_id: i, subject_id: j, finish: 0)
+  end
 
-    (1..3).each do |k|
+  (1..3).each do |k|
       UserTask.create(user_id: i, task_id: k, finish: 0)
     end
-  end
 end
 
 (11..20).each do |i|
-  TraineeCourse.create(user_id: i, course_id: 2, finish: 0)
+  TraineeCourse.create(user_id: i, course_id: 2, start_at: Date.today, finish: 0)
 
   (3..6).each do |j|
     UserSubject.create(user_id: i, subject_id: j, finish: 1)
+  end
 
-    (1..3).each do |k|
-      UserTask.create(user_id: i, task_id: k, finish: 1)
-    end
+  (1..3).each do |k|
+    UserTask.create(user_id: i, task_id: k, finish: 1)
   end
 end
 
-report = {
+reports = {
   "Report1" => "Content for report1",
   "Report2" => "Content for report2",
   "Report2" => "Content for report2"
 }
 
-report.each do |title, content|
+reports.each do |title, content|
   (2..10).each do |i|
     Report.create(user_id: i, title: title, content: content)
   end

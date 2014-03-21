@@ -12,18 +12,18 @@
   </thead>
 
   <% @user.trainee_courses.each do |trainee_course| %>
-    <% if !trainee_course.start_at.nil? && trainee_course.finish? %>
-      <% course = trainee_course.course %>
+    <% course = trainee_course.course %>
+    <% if trainee_course.finish? %>
       <tr class="success">
         <td><%= link_to course.name, course %></td>
         <td>finished</td>
       </tr>
-    <% elsif !trainee_course.start_at.nil? && !trainee_course.finish? %>
+    <% elsif trainee_course.start_at %>
       <tr class="error">
         <td><%= link_to course.name, course %></td>
         <td>in progress</td>
       </tr>
-    <% elsif !trainee_course.start_at.nil? %>
+    <% elsif trainee_course.start_at %>
       <tr class="warning">
         <td><%= link_to course.name, course %></td>
         <td>started</td>
@@ -37,11 +37,6 @@
           <td><%= subject.name %></td>
           <td>finished</td>
         </tr>
-      <% else %>
-        <tr class="error">
-          <td><%= subject.name %></td>
-          <td>in progress</td>
-        </tr>
       <% end %>
     <% end %>
 
@@ -51,11 +46,6 @@
         <tr class="success">
           <td><%= task.name %></td>
           <td>finished</td>
-        </tr>
-      <% else %>
-        <tr class="error">
-          <td><%= task.name %></td>
-          <td>in progress</td>
         </tr>
       <% end %>
     <% end %>

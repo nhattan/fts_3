@@ -3,6 +3,10 @@ class User < ActiveRecord::Base
 
   attr_accessor :validate_password
 
+  has_many :activities
+  def recent_activities(limit)
+    activities.order('created_at DESC').limit(limit)
+  end
   has_many :event_logs
   has_many :trainee_courses, dependent: :destroy
   has_many :user_subjects, dependent: :destroy
