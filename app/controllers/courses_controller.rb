@@ -4,7 +4,7 @@ class CoursesController < ApplicationController
 
   def show
     @course = Course.find params[:id]
-    @user_course = current_user.user_courses.find_by id: params[:id]
-    redirect_to root_url if @user_course.nil?
+    @trainee_course = current_user.trainee_courses.find_by course_id: params[:id]
+    redirect_to root_url if @trainee_course.nil?
   end
 end

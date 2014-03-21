@@ -2,9 +2,9 @@
 <h1>Courses</h1>
 
 <ul class="courses">
-  <% current_user.user_courses.each do |user_course| %>
+  <% current_user.trainee_courses.each do |trainee_course| %>
     <li>
-      <% course = user_course.course %>
+      <% course = trainee_course.course %>
       <div><%= link_to course.name, course %></div>
     </li>
   <% end %>

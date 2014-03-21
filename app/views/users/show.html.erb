@@ -11,19 +11,19 @@
     <td><strong>Status</strong></td>
   </thead>
 
-  <% @user.user_courses.each do |user_course| %>
-    <% if !user_course.start_at.nil? && user_course.finish? %>
-      <% course = user_course.course %>
+  <% @user.trainee_courses.each do |trainee_course| %>
+    <% if !trainee_course.start_at.nil? && trainee_course.finish? %>
+      <% course = trainee_course.course %>
       <tr class="success">
         <td><%= link_to course.name, course %></td>
         <td>finished</td>
       </tr>
-    <% elsif !user_course.start_at.nil? && !user_course.finish? %>
+    <% elsif !trainee_course.start_at.nil? && !trainee_course.finish? %>
       <tr class="error">
         <td><%= link_to course.name, course %></td>
         <td>in progress</td>
       </tr>
-    <% elsif !user_course.start_at.nil? %>
+    <% elsif !trainee_course.start_at.nil? %>
       <tr class="warning">
         <td><%= link_to course.name, course %></td>
         <td>started</td>

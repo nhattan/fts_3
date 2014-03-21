@@ -26,20 +26,20 @@
 
     <div class="center">
       <h4>Activities</h4>
-      <% @course.user_courses.each do |user_course| %>
-        <% user = user_course.user %>
-        <% user_course.versions.each do |version| %>
+      <% @course.trainee_courses.each do |trainee_course| %>
+        <% user = trainee_course.user %>
+        <% trainee_course.versions.each do |version| %>
           <div>
             <% if version.event == "update" %>
               <%= link_to user.name, user %>
               finished
-              <%= user_course.course.name %>
+              <%= trainee_course.course.name %>
               at
               <%= version.created_at.to_date %>
             <% else %>
               <%= link_to user.name, user %>
               started
-              <%= user_course.course.name %>
+              <%= trainee_course.course.name %>
               at
               <%= version.created_at.to_date %>
             <% end %>
