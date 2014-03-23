@@ -3,32 +3,34 @@
 <h2><%= @course.description %></h2>
 
 <div class="center">
-  <div class="btn-group">
-    <% current_user.user_subjects.each do |user_subject| %>
-      <% subject = user_subject.subject %>
-      <% if user_subject.finish? %>
-        <%= link_to subject.name, "", 
-          class: "btn btn-large btn-success" %>
+  <div class="span6 offset3 btn-group">
+    <% @course.subjects.each do |subject| %>
+      <% user_subject = @trainee_course.user_subjects.find_by subject_id: subject.id %>
+      <% if user_subject.nil? %>
+        <%= link_to subject.name, edit_course_subject_url(@course, subject_id: subject.id),
+          class: "btn btn-large btn-default" %>
+      <% elsif user_subject.finish? %>
+        <%= link_to subject.name, edit_course_subject_url(@course, subject_id: subject.id),
+          class: "btn btn-large btn-success active" %>
       <% else %>
-        <%= link_to subject.name, "", 
-          class: "btn btn-large btn-primary" %>
+        <%= link_to subject.name, edit_course_subject_url(@course, subject_id: subject.id),
+          class: "btn btn-large btn-info" %>
       <% end %>
     <% end %>
-  </div>
-
-  <% if @trainee_course.start_at.nil? %>
-    <%= form_for @course do |f| %>
-      <br>
-      <%= f.submit "Start", class: "btn btn-large btn-primary" %>
-    <% end %>
-  <% else %>
     <div>
-      <br>
-      <button class="btn btn-large btn-success active">
-        Started
-      </button>
+      <% if @course.started? %>
+        <% if @trainee_course.started? %>
+          <h4>You started</h4>
+        <% else %>
+          <%= form_for @course do |f| %>
+              <h4><%= f.submit "Start Course", class: "btn btn-large btn-primary" %></h4>
+          <% end %>
+        <% end %>
+      <% else %>
+        <h4>This course not started!</h4>
+      <% end %>
     </div>
-  <% end %>
+  </div>  
 
   <div class="row">
     <div class="span6 offset3">
@@ -42,22 +44,20 @@
 
       <h4>Your activities</h4>
       <% @activities.each do |activity| %>
-        <% if current_user?(activity.user) %>
-          <% if activity.in_course? %>
-            <div>
-              <% if activity.updating && !activity.object.finish %>
-                You started
-                <%= @course.name %>
-                at
-                <%= activity.created_at.to_date %>
-              <% elsif activity.object.finish %>
-                You finished
-                <%= @course.name %>
-                at
-                <%= activity.created_at.to_date %>
-              <% end %>
-            </div>
-          <% end %>
+        <% if current_user?(activity.user) && activity.in_course? %>
+          <div>
+            <% if activity.object.finish? %>
+              You finished
+              <%= @course.name %>
+              at
+              <%= activity.created_at.to_date %>
+            <% elsif activity.updating %>
+              You started
+              <%= @course.name %>
+              at
+              <%= activity.created_at.to_date %>
+            <% end %>
+          </div>
         <% end %>
       <% end %>
     </div>

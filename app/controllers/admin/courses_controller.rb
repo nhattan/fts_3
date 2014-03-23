@@ -1,6 +1,7 @@
 class Admin::CoursesController < ApplicationController
   before_action :signed_in_user
   before_action :admin_user
+  before_action :enrolled_course, only: [:edit, :update, :destroy]
 
   def index
     @courses = Course.all
@@ -21,18 +22,13 @@ class Admin::CoursesController < ApplicationController
   end
 
   def create
-    @course = Course.new course_params
-    @course.course_subjects.each do |course_subject|
-      if course_subject.subject_id.nil?
-        course_subject.destroy
-      end
-    end
-    if @course.save
+    @course = Course.new course_params    
+    ActiveRecord::Base.transaction do
+      @course.save
+      @course.supervisor_courses.create user_id: current_user.id
       flash[:success] = "Course created!"
-      redirect_to admin_course_url @course
-    else
-      render 'new'
     end
+    redirect_to admin_course_url @course
   end
 
   def edit
@@ -42,23 +38,14 @@ class Admin::CoursesController < ApplicationController
     end
   end
 
-  def update
+  def update    
     @course = Course.find params[:id]
-
     if params[:commit].to_s == "Start"
       params[:course] = {start_at: Date.today.to_s}
     end
 
-    if params[:course][:course_subject] != nil
-      params[:course][:course_subject].each do |_, value|
-        if value.to_s != "0"
-          @course.trainee_courses.create user_id: value
-        end
-      end
-    end
-
     if @course.update_attributes course_params
-      flash[:success] = "Updated"
+      flash[:success] = "Course updated!"
       redirect_to admin_course_url @course
     else
       render 'edit'
@@ -80,7 +67,15 @@ class Admin::CoursesController < ApplicationController
   private
 
     def course_params
-      params.require(:course).permit(:name, :description, 
+      params.require(:course).permit(:name, :description, :start_at,  
         course_subjects_attributes: [:id, :course_id, :subject_id])
+    end
+    
+    def enrolled_course
+      @course = Course.find params[:id]
+      unless @course.supervisor_courses.find_by user_id: current_user.id
+        flash[:error] = "You can't edit/destroy this course"
+        redirect_to admin_courses_url
+      end
     end
 end

@@ -1,6 +1,7 @@
 class UserTask < ActiveRecord::Base
   belongs_to :user
   belongs_to :task
+  belongs_to :user_subject
   after_create :create_activity
 
   private

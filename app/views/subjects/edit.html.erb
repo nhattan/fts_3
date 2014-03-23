@@ -1,0 +1,60 @@
+<% provide(:title, @course.name) %>
+<h1><%= @course.name %></h1>
+<h2><%= @course.description %></h2>
+
+<div class="center">
+  <div class="span6 offset3 btn-group">
+    <% @course.subjects.each do |subject| %>
+      <% user_subject = @trainee_course.user_subjects.find_by subject_id: subject.id %>
+      <% if subject == @subject %>
+        <%= link_to subject.name, edit_course_subject_url(@course, subject_id: subject.id),
+          class: "btn btn-large btn-primary" %>
+      <% elsif user_subject.finish? %>
+        <%= link_to subject.name, edit_course_subject_url(@course, subject_id: subject.id),
+          class: "btn btn-large btn-success active" %>      
+      <% elsif user_subject.started? %>
+        <%= link_to subject.name, edit_course_subject_url(@course, subject_id: subject.id),
+          class: "btn btn-large btn-info" %>
+      <% else %>
+        <%= link_to subject.name, edit_course_subject_url(@course, subject_id: subject.id),
+          class: "btn btn-large btn-default" %>
+      <% end %>
+    <% end %>
+    <br/>
+    <div>
+      <% user_subject = @trainee_course.user_subjects.find_by subject_id: @subject.id %>
+      <%= form_for(:tasks, url: course_subject_url, method: :patch) do |f| %>        
+        <% tasks = @subject.tasks %>
+        <% tasks.each do |task| %>          
+          <h5>
+            <% if @trainee_course.started? %>
+              <% user_task = user_subject.user_tasks.find_by task_id: task.id %>
+              <% if user_subject.started? %>
+                <% if user_task.finish %>
+                  <input type="checkbox" disabled="disabled" checked="checked">
+                  <%= task.name %>
+                <% else %>
+                  <%= f.check_box task.id, {checked: false}, 1 %> <%= task.name %>
+                <% end %>
+              <% else %>
+                <input type="checkbox" disabled="disabled"> <%= task.name %>
+              <% end %>              
+            <% else %>
+              <input type="checkbox" disabled="disabled"> <%= task.name %>
+            <% end %>
+          </h5>
+        <% end %>
+        <%= hidden_field_tag :subject_id, @subject.id %>        
+        <% if @trainee_course.started? %>
+          <% if user_subject.started? %>
+            <%= f.submit "Save", class: "btn btn-large btn-primary" %>
+          <% else %>
+            <%= f.submit "Start", class: "btn btn-large btn-primary" %>
+          <% end %>
+        <% else %>
+          <h4>This course didn't start!</h4>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

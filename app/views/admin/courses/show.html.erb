@@ -29,15 +29,16 @@
       <% if activity.in_course? %>
         <% unless admin_user? activity.user %>
           <div>
-            <% if activity.updating && !activity.object.finish %>
-              <%= link_to activity.user.name, activity.user %>
-              started
+            <% user = activity.user %>
+            <% if activity.object.finish? %>
+              <%= link_to gravatar_for(user, size: 40), user %>
+              finished
               <%= @course.name %>
               at
               <%= activity.created_at.to_date %>
-            <% elsif activity.object.finish %>
-              <%= link_to activity.user.name, activity.user %>
-              finished
+            <% elsif activity.object.start_at %>
+              <%= link_to gravatar_for(user, size: 40), user %>
+              started
               <%= @course.name %>
               at
               <%= activity.created_at.to_date %>

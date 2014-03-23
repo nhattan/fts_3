@@ -12,6 +12,9 @@ Fts3::Application.routes.draw do
 
   resources "users"
   resources "courses"
+  resources "courses" do
+    resource "subject", only: [:edit, :update]
+  end
   namespace :admin do
     match "/signin", to: "sessions#new",        via: :get
     match "/signout", to: "sessions#destroy",   via: :post
@@ -21,7 +24,7 @@ Fts3::Application.routes.draw do
     resources "subjects"
 
     resources "courses" do
-      resource "assign_trainees", onley: [:edit, :create, :destroy]
+      resource "assign_trainees", only: [:edit, :create, :destroy]
       resource "assign_supervisors", only: [:edit, :create, :destroy]
     end
   end
