@@ -22,6 +22,11 @@ class Admin::CoursesController < ApplicationController
 
   def create
     @course = Course.new course_params
+    @course.course_subjects.each do |course_subject|
+      if course_subject.subject_id.nil?
+        course_subject.destroy
+      end
+    end
     if @course.save
       flash[:success] = "Course created!"
       redirect_to admin_course_url @course
@@ -32,6 +37,9 @@ class Admin::CoursesController < ApplicationController
 
   def edit
     @course = Course.find params[:id]
+    (Subject.all - @course.subjects).each do |subject|
+      @course.course_subjects.build subject: subject
+    end
   end
 
   def update
@@ -55,6 +63,11 @@ class Admin::CoursesController < ApplicationController
     else
       render 'edit'
     end
+    @course.course_subjects.each do |course_subject|
+      if course_subject.subject_id.nil?
+        course_subject.destroy
+      end
+    end
   end
 
   def destroy
@@ -67,7 +80,7 @@ class Admin::CoursesController < ApplicationController
   private
 
     def course_params
-      params.require(:course).permit(:name, :description, :start_at, 
+      params.require(:course).permit(:name, :description, 
         course_subjects_attributes: [:id, :course_id, :subject_id])
     end
 end

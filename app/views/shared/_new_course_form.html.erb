@@ -9,7 +9,8 @@
         <%= f.fields_for :course_subjects do |builder| %>
           <% subject = builder.object.subject %>
           <div>
-            <%= builder.check_box :subject_id, {checked: false}, subject.id %>
+            <%= builder.check_box :subject_id, 
+              {checked: builder.object.persisted?}, subject.id, '' %>
             <%= subject.name %>
           </div>
         <% end %>
