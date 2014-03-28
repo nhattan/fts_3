@@ -2,10 +2,13 @@ class Admin::AssignSupervisorsController < ApplicationController
   before_action :signed_in_user
   before_action :admin_user
   before_action :current_course
+  before_action :enrolled_course
 
   def edit
-    @admin_enrolls = @course.supervisor_courses.paginate(page: params[:page], per_page: 5)
-    @admin_not_enrolls = User.supervisor_not_enroll_to_courses(@course).paginate(page: params[:page], per_page: 5)
+    @admin_enrolls = @course.supervisor_courses
+      .paginate(page: params[:page], per_page: 5)
+    @admin_not_enrolls = User.supervisor_not_enroll_to_courses(@course)
+      .paginate(page: params[:page], per_page: 5)
   end
 
   def create  
@@ -21,7 +24,13 @@ class Admin::AssignSupervisorsController < ApplicationController
   end
 
   private
-  def current_course
-    @course = Course.find params[:course_id]
-  end
+    def current_course
+      @course = Course.find params[:course_id]
+    end
+    def enrolled_course
+      unless @course.supervisor_courses.find_by user_id: current_user.id
+        flash[:error] = "You can't assign supervisor to this course"
+        redirect_to admin_course_url @course
+      end
+    end
 end

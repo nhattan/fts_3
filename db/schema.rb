@@ -96,6 +96,8 @@ ActiveRecord::Schema.define(version: 20140321081021) do
   create_table "user_subjects", force: true do |t|
     t.integer  "user_id"
     t.integer  "subject_id"
+    t.integer  "trainee_course_id"
+    t.datetime "start_at"
     t.boolean  "finish"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -107,6 +109,7 @@ ActiveRecord::Schema.define(version: 20140321081021) do
   create_table "user_tasks", force: true do |t|
     t.integer  "user_id"
     t.integer  "task_id"
+    t.integer  "user_subject_id"
     t.boolean  "finish"
     t.datetime "created_at"
     t.datetime "updated_at"

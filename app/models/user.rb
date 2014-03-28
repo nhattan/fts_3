@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   end
   has_many :event_logs
   has_many :trainee_courses, dependent: :destroy
+  has_many :supervisor_courses, dependent: :destroy
   has_many :user_subjects, dependent: :destroy
   has_many :user_tasks, dependent: :destroy
   

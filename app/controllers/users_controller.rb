@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-
-  before_filter :signed_in_user
+  before_action :signed_in_user
+  before_action :trainee_user
 
   def show
     @user = User.find params[:id]
@@ -12,8 +12,7 @@ class UsersController < ApplicationController
   def create
   end
 
-   def edit
-  	#redirect_back_or current_user
+  def edit
     @user = User.find params[:id]
     unless current_user? @user
       flash[:error] = "You can't edit this user"
@@ -22,7 +21,7 @@ class UsersController < ApplicationController
   end
 
   def update
-   @user = User.find params[:id] 
+    @user = User.find params[:id] 
     @user.validate_password = true   
     if @user.update_attributes user_params
       flash[:success] = "Profile updated"
