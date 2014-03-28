@@ -19,12 +19,12 @@ class CoursesController < ApplicationController
       trainee_course = current_user.trainee_courses.find_by course_id: @course.id
       ActiveRecord::Base.transaction do
         trainee_course.update_attributes start_at: Date.today.to_s
-        @course.course_subjects.each do |subject|
-          user_subject = trainee_course.user_subjects.create(subject_id: subject.id,
+        @course.course_subjects.each do |course_subject|
+          user_subject = trainee_course.user_subjects.create(subject_id: course_subject.subject_id,
             user_id: current_user.id)
         end
       end
-      redirect_to course_url @course
+      redirect_to user_course_url(current_user, @course)
     end
   end
 

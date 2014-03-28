@@ -7,52 +7,40 @@
     <% @course.subjects.each do |subject| %>
       <% user_subject = @trainee_course.user_subjects.find_by subject_id: subject.id %>
       <% if subject == @subject %>
-        <%= link_to subject.name, edit_course_subject_url(@course, subject_id: subject.id),
-          class: "btn btn-large btn-primary" %>
+        <% type_button = "btn btn-large btn-primary" %>
       <% elsif user_subject.finish? %>
-        <%= link_to subject.name, edit_course_subject_url(@course, subject_id: subject.id),
-          class: "btn btn-large btn-success active" %>      
+        <% type_button = "btn btn-large btn-success active" %>
       <% elsif user_subject.started? %>
-        <%= link_to subject.name, edit_course_subject_url(@course, subject_id: subject.id),
-          class: "btn btn-large btn-info" %>
+        <% type_button = "btn btn-large btn-info" %>
       <% else %>
-        <%= link_to subject.name, edit_course_subject_url(@course, subject_id: subject.id),
-          class: "btn btn-large btn-default" %>
+        <% type_button = "btn btn-large btn-default" %> 
       <% end %>
+      <%= link_to subject.name, edit_user_course_subject_url(current_user, @course,
+          subject), class: type_button%>
     <% end %>
     <br/>
     <div>
-      <% user_subject = @trainee_course.user_subjects.find_by subject_id: @subject.id %>
-      <%= form_for(:tasks, url: course_subject_url, method: :patch) do |f| %>        
-        <% tasks = @subject.tasks %>
-        <% tasks.each do |task| %>          
-          <h5>
-            <% if @trainee_course.started? %>
-              <% user_task = user_subject.user_tasks.find_by task_id: task.id %>
-              <% if user_subject.started? %>
-                <% if user_task.finish %>
-                  <input type="checkbox" disabled="disabled" checked="checked">
-                  <%= task.name %>
-                <% else %>
-                  <%= f.check_box task.id, {checked: false}, 1 %> <%= task.name %>
-                <% end %>
+      <% user_subject = @trainee_course.user_subjects.find_by subject_id: @subject.id %>      
+      <%= form_for(@user_subject, url: user_course_subject_url, method: :patch) do |f| %> 
+        <% if user_subject.started? %>
+          <%= f.fields_for :user_tasks do |builder| %>
+            <% task = builder.object.task %>
+            <h4><div>
+              <% user_task = builder.object %>
+              <% if user_task.finish %>
+                <%= builder.check_box :finish, {checked: true}, 1, '' %>
               <% else %>
-                <input type="checkbox" disabled="disabled"> <%= task.name %>
-              <% end %>              
-            <% else %>
-              <input type="checkbox" disabled="disabled"> <%= task.name %>
-            <% end %>
-          </h5>
-        <% end %>
-        <%= hidden_field_tag :subject_id, @subject.id %>        
-        <% if @trainee_course.started? %>
-          <% if user_subject.started? %>
-            <%= f.submit "Save", class: "btn btn-large btn-primary" %>
-          <% else %>
-            <%= f.submit "Start", class: "btn btn-large btn-primary" %>
+                <%= builder.check_box :finish, {checked: false}, 1, '' %>
+              <% end %>
+              <%= task.name %>
+            </div></h4>
           <% end %>
+          <%= f.submit "Save", class: "btn btn-large btn-primary" %>
         <% else %>
-          <h4>This course didn't start!</h4>
+          <% @subject.tasks.each do |task| %>
+            <h4><input type="checkbox" disabled="disabled">  <%= task.name %></h4>
+          <% end %>
+          <%= f.submit "Start", class: "btn btn-large btn-primary" %>
         <% end %>
       <% end %>
     </div>

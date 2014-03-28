@@ -5,7 +5,7 @@
   <% current_user.trainee_courses.each do |trainee_course| %>
     <li>
       <% course = trainee_course.course %>
-      <div><%= link_to course.name, course %></div>
+      <div><%= link_to course.name, user_course_path(current_user, course) %></div>
     </li>
   <% end %>
 </ul>
