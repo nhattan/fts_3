@@ -6,16 +6,21 @@
   <div class="span6 offset3 btn-group">
     <% @course.subjects.each do |subject| %>
       <% user_subject = @trainee_course.user_subjects.find_by subject_id: subject.id %>
-      <% if user_subject.nil? %>
-        <%= link_to subject.name, edit_course_subject_url(@course, subject_id: subject.id),
-          class: "btn btn-large btn-default" %>
-      <% elsif user_subject.finish? %>
-        <%= link_to subject.name, edit_course_subject_url(@course, subject_id: subject.id),
-          class: "btn btn-large btn-success active" %>
+      <% if @trainee_course.started? %>
+        <% if user_subject.finish? %>
+          <% type_button = "btn btn-large btn-success active" %>
+        <% elsif user_subject.started? %>
+          <% type_button = "btn btn-large btn-info" %>
+        <% else %>
+          <% type_button = "btn btn-large btn-default" %> 
+        <% end %>
+        <%= link_to subject.name, edit_user_course_subject_url(current_user, @course,
+          subject), class: type_button%>
       <% else %>
-        <%= link_to subject.name, edit_course_subject_url(@course, subject_id: subject.id),
-          class: "btn btn-large btn-info" %>
-      <% end %>
+        <% type_button = "btn btn-large btn-default" %>
+        <%= link_to subject.name, user_course_subject_url(current_user, @course,
+          subject), class: type_button%>    
+      <% end %>      
     <% end %>
     <div>
       <% if @course.started? %>

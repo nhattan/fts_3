@@ -1,53 +1,44 @@
 class SubjectsController < ApplicationController
-  before_action :current_course
+  before_action :current_trainee_subject
   before_action :correct_user
+  before_action :trainee_course_started, only: [:edit, :update]
 
-  def edit
-    @trainee_course = current_user.trainee_courses.find_by course_id: @course.id
-    if params[:subject_id].nil?
-      @course.course_subjects.each do |course_subject|
-        @subject = course_subject.subject if course_subject.subject
-      end
-    else
-      @subject = Subject.find params[:subject_id]
-    end
+  def show
+    @trainee_course = current_user.trainee_courses.find_by_course_id @course.id
   end
 
+  def edit
+    @user_subject = @trainee_course.user_subjects.find_by_subject_id @subject.id
+  end
   def update
-    @subject = Subject.find params[:subject_id]
-    @trainee_course = current_user.trainee_courses.find_by course_id: @course.id
-    user_subject = @trainee_course.user_subjects.find_by subject_id: @subject.id
+    @user_subject = @trainee_course.user_subjects.find_by_subject_id @subject.id
     if params[:commit] == "Start"
-      if current_user.trainee_courses.find_by(course_id: @course.id).started?
+      unless @user_subject.started?
         ActiveRecord::Base.transaction do
-          user_subject.update_attributes start_at: Date.today.to_s
+          @user_subject.update_attributes start_at: Date.today.to_s
           @subject.tasks.each do |task|
-            user_subject.user_tasks.create(task_id: task.id,
+            @user_subject.user_tasks.create(task_id: task.id,
               user_id: current_user.id)
           end
+          flash[:sucess] = "This subject is started!"
         end
-        flash[:sucess] = "This subject started!"
-        render 'edit'
-      else
-        flash[:error] = "You didn't start this course!"
-        redirect_to @course
-      end
-    elsif params[:commit] == "Save"
-      params[:tasks].each do |task_id, value|
-        unless value.to_s == "0".to_s
-          user_subject = @trainee_course.user_subjects.find_by subject_id: params[:subject_id]
-          task = user_subject.user_tasks.find_by task_id: task_id
-          task.update_attributes finish: true
-        end
-      end
-      render 'edit'
+      end      
+    else
+      @user_subject.update_attributes user_subject_params
     end
+    render 'edit'
   end
 
   private
   
-    def current_course
+   def user_subject_params
+      params.require(:user_subject).permit(:start_at,  
+        user_tasks_attributes:[:id, :user_id, :task_id, :user_subject_id, :finish])
+    end
+
+    def current_trainee_subject
       @course = Course.find params[:course_id]
+      @subject = Subject.find params[:id]
     end
 
     def correct_user
@@ -55,6 +46,13 @@ class SubjectsController < ApplicationController
       if trainee_course.nil?
         flash[:error] = "You not have permit to update this course progress!"
         redirect_to root_url
+      end
+    end
+
+    def trainee_course_started
+      @trainee_course = current_user.trainee_courses.find_by_course_id @course.id
+      unless @trainee_course.started?
+        redirect_to user_course_url current_user, @course
       end
     end
 end

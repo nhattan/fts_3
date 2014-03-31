@@ -4,6 +4,7 @@ class UserSubject < ActiveRecord::Base
   belongs_to :trainee_course
   has_many :user_tasks, dependent: :destroy
   after_create :create_activity
+  accepts_nested_attributes_for :user_tasks, allow_destroy: true
 
   def finish?
     finish

@@ -12,8 +12,10 @@ Fts3::Application.routes.draw do
 
   resources "users"
   resources "courses"
-  resources "courses" do
-    resource "subject", only: [:edit, :update]
+  resources "users" do
+    resources "courses" do
+      resources "subjects", only: [:show, :edit, :update]
+    end
   end
   namespace :admin do
     match "/signin", to: "sessions#new",        via: :get
