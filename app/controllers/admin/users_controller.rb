@@ -7,10 +7,22 @@ class Admin::UsersController < ApplicationController
     @user = User.find params[:id]
   end
 
+  def new
+    @user = User.new
+  end
+
   def index
+    @users = User.all.paginate(page: params[:page], per_page: 15)
   end
 
   def create
+    @user = User.new user_params
+    if @user.save
+      flash[:success] = "Create user success!"
+      redirect_to admin_user_path(@user)
+    else
+      render 'new'
+    end
   end
 
   def edit
@@ -33,6 +45,9 @@ class Admin::UsersController < ApplicationController
   end
 
   def destroy
+    User.find(params[:id]).destroy
+    flash[:success] = "User destroyed."
+    redirect_to admin_users_url
   end
 
   private
