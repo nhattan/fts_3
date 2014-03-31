@@ -15,15 +15,17 @@ class CoursesController < ApplicationController
   def update
     trainee = current_user
     if params[:commit] == "Start Course"
-      flash[:success] = "Trainee course started"
       trainee_course = current_user.trainee_courses.find_by course_id: @course.id
-      ActiveRecord::Base.transaction do
-        trainee_course.update_attributes start_at: Date.today.to_s
-        @course.course_subjects.each do |course_subject|
-          user_subject = trainee_course.user_subjects.create(subject_id: course_subject.subject_id,
-            user_id: current_user.id)
-        end
+      trainee_course.start_at = Date.today.to_s
+      @course.course_subjects.each do |course_subject|
+        user_subject = trainee_course.user_subjects.build(subject_id: course_subject.subject_id,
+          user_id: current_user.id)
       end
+      if trainee_course.save
+        flash[:success] = "Trainee course started"
+        else
+          flash[:error] = "Started subject error"
+        end
       redirect_to user_course_url(current_user, @course)
     end
   end

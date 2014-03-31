@@ -14,15 +14,17 @@ class SubjectsController < ApplicationController
     @user_subject = @trainee_course.user_subjects.find_by_subject_id @subject.id
     if params[:commit] == "Start"
       unless @user_subject.started?
-        ActiveRecord::Base.transaction do
-          @user_subject.update_attributes start_at: Date.today.to_s
-          @subject.tasks.each do |task|
-            @user_subject.user_tasks.create(task_id: task.id,
-              user_id: current_user.id)
-          end
-          flash[:sucess] = "This subject is started!"
+        @user_subject.start_at = Date.today.to_s
+        @subject.tasks.each do |task|
+          @user_subject.user_tasks.build(task_id: task.id,
+            user_id: current_user.id)
         end
-      end      
+        if @user_subject.save
+          flash[:success] = "This subject is started!"
+        else
+          flash[:error] = "Started subject error"
+        end
+      end
     else
       @user_subject.update_attributes user_subject_params
     end
