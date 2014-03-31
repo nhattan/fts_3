@@ -23,6 +23,11 @@ class Admin::CoursesController < ApplicationController
 
   def create
     @course = Course.new course_params    
+    @course.course_subjects.each do |course_subject|
+      if course_subject.subject_id.nil?
+        course_subject.destroy
+      end
+    end
     ActiveRecord::Base.transaction do
       @course.save
       @course.supervisor_courses.create user_id: current_user.id

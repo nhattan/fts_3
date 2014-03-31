@@ -28,6 +28,7 @@ Fts3::Application.routes.draw do
     resources "courses" do
       resource "assign_trainees", only: [:edit, :create, :destroy]
       resource "assign_supervisors", only: [:edit, :create, :destroy]
+      resources "course_subjects", only: [:show, :edit, :update]
     end
   end
   # The priority is based upon order of creation: first created -> highest priority.

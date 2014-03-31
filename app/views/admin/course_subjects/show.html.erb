@@ -1,0 +1,22 @@
+<% provide(:title, @course.name) %>
+<h1><%= @course.name %></h1>
+<h2><%= @course.description %></h2>
+<div class="center">
+  <div class="span6 offset3 btn-group">
+    <% @course.subjects.each do |subject| %>
+      <% if subject == @subject %>
+        <% type_button = "btn btn-large btn-primary" %>
+      <% else %>
+        <% type_button = "btn btn-large btn-default" %>          
+      <% end %>
+      <%= link_to subject.name,  admin_course_course_subject_path(@course,
+        subject), class: type_button%>
+    <% end %>
+    <div>
+      <% @subject.tasks.each do |task| %>
+        <h4><%= task.name %></h4>
+      <% end %>
+      <h4><%= link_to "Back", admin_course_path(@course) %>
+    </div>
+  </div>
+</div>

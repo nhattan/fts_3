@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 20140321081021) do
   create_table "course_subjects", force: true do |t|
     t.integer  "course_id"
     t.integer  "subject_id"
+    t.datetime "start_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

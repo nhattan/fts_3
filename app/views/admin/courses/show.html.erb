@@ -3,22 +3,25 @@
 <div class="row">
   <div class="span6 offset3">
     <% @course_subjects.each do |course_subject| %>
-      <% unless course_subject.subject.nil? %>
-        <div>
+      <div>
+        <% if @course.started? %>
           <%= link_to course_subject.subject.name, 
-            admin_subject_path(course_subject.subject) %>
-        </div>
-      <% end %>
+            edit_admin_course_course_subject_path(@course, course_subject.subject) %>
+        <% else %>
+          <%= link_to course_subject.subject.name, 
+            admin_course_course_subject_path(@course, course_subject.subject) %>
+        <% end %>
+      </div>
     <% end %>
 
-    <%if @course.start_at.nil? %>
+    <%if @course.started? %>
+      <div><h3>This course is started</h3></div>      
+    <% else %>
       <%= form_for [:admin, @course] do |f| %>
         <%= render 'shared/error_messages', object: f.object %>
         <div>This course dosen't start, click start to start thi course</div>
         <%= f.submit "Start", class: "btn btn-large btn-primary" %>
       <% end %>
-    <% else %>
-      <div><h3>This course is started</h3></div>
     <% end %>
 
     <div><%= link_to "Trainee in Courses", edit_admin_course_assign_trainees_path(@course) %></div>
