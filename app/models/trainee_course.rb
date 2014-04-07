@@ -8,6 +8,9 @@ class TraineeCourse < ActiveRecord::Base
   def started?
     !start_at.nil?
   end
+  def finish?
+    finish == 1
+  end
   private
     def create_activity
       Activity.create(object: self, name: 'create', user: user, 

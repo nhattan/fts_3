@@ -6,7 +6,9 @@
   <div class="span6 offset3 btn-group">
     <% @course.subjects.each do |subject| %>
       <% user_subject = @trainee_course.user_subjects.find_by subject_id: subject.id %>
-      <% if subject == @subject %>
+      <% if user_subject.nil? %>
+        <% type_button = "btn btn-large btn-default" %>
+      <% elsif subject == @subject %>
         <% type_button = "btn btn-large btn-primary" %>
       <% elsif user_subject.finish? %>
         <% type_button = "btn btn-large btn-success active" %>
@@ -20,28 +22,41 @@
     <% end %>
     <br/>
     <div>
-      <% user_subject = @trainee_course.user_subjects.find_by subject_id: @subject.id %>      
-      <%= form_for(@user_subject, url: user_course_subject_url, method: :patch) do |f| %> 
-        <% if user_subject.started? %>
-          <%= f.fields_for :user_tasks do |builder| %>
-            <% task = builder.object.task %>
-            <h4><div>
-              <% user_task = builder.object %>
-              <% if user_task.finish %>
-                <%= builder.check_box :finish, {checked: true}, 1, '' %>
-              <% else %>
-                <%= builder.check_box :finish, {checked: false}, 1, '' %>
-              <% end %>
-              <%= task.name %>
-            </div></h4>
+      <% user_subject = @trainee_course.user_subjects.find_by subject_id: @subject.id %>
+      <% if user_subject.present? %>         
+        <%= form_for(@user_subject, url: user_course_subject_url, method: :patch) do |f| %> 
+          <% if user_subject.started? %>
+            <%= f.fields_for :user_tasks do |builder| %>
+              <% task = builder.object.task %>
+              <h4><div>
+                <% user_task = builder.object %>
+                <% if user_task.finish %>
+                  <%= builder.check_box :finish, {checked: true}, 1, '' %>
+                <% else %>
+                  <%= builder.check_box :finish, {checked: false}, 1, '' %>
+                <% end %>
+                <%= task.name %>
+              </div></h4>
+            <% end %>
+            <%= f.submit "Save", class: "btn btn-large btn-primary" %>
+          <% else %>
+            <% @subject.tasks.each do |task| %>
+              <h4><input type="checkbox" disabled="disabled">  <%= task.name %></h4>
+            <% end %>
+            <% if @user_subject.course_subject.started? %>
+              <%= f.submit "Start", class: "btn btn-large btn-primary" %>
+            <% else %>
+              <h4>This subject not started!</h4>
+            <% end %>
           <% end %>
-          <%= f.submit "Save", class: "btn btn-large btn-primary" %>
-        <% else %>
+        <% end %>
+      <% else %>
+        <div>
           <% @subject.tasks.each do |task| %>
             <h4><input type="checkbox" disabled="disabled">  <%= task.name %></h4>
           <% end %>
-          <%= f.submit "Start", class: "btn btn-large btn-primary" %>
-        <% end %>
+          <h4><%= link_to "Back", user_course_path(current_user, @course) %>
+        </div> 
       <% end %>
     </div>
   </div>

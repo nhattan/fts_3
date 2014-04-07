@@ -4,6 +4,10 @@ class UserTask < ActiveRecord::Base
   belongs_to :user_subject
   after_create :create_activity
 
+  def finish?
+    finish
+  end
+  
   private
     def create_activity
       Activity.create(object: self, name: 'create', user: user,
