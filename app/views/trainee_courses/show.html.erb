@@ -1,10 +1,11 @@
-<% provide(:title, @course.name) %>
-<h1><%= @course.name %></h1>
-<h2><%= @course.description %></h2>
+<% course = @trainee_course.course %>
+<% provide(:title, course.name) %>
+<h1><%= course.name %></h1>
+<h2><%= course.description %></h2>
 
 <div class="center">
   <div class="span6 offset3 btn-group">
-    <% @course.subjects.each do |subject| %>
+    <% course.subjects.each do |subject| %>
       <% user_subject = @trainee_course.user_subjects.find_by subject_id: subject.id %>
       <% if @trainee_course.started? %>
         <% if user_subject.finish? %>
@@ -14,21 +15,24 @@
         <% else %>
           <% type_button = "btn btn-large btn-default" %> 
         <% end %>
+        <%= link_to subject.name, edit_user_trainee_course_user_subject_url(current_user,
+        @trainee_course, user_subject), class: type_button%>
       <% else %>
         <% type_button = "btn btn-large btn-default" %>
+        <%= link_to subject.name, course_course_subject_url(course,
+          subject), class: type_button%>
       <% end %>
-      <%= link_to subject.name, edit_user_course_subject_url(current_user, @course,
-        subject), class: type_button%>
     <% end %>
     <div>
-      <% if @course.started? %>
+      <% if course.started? %>
         <% if @trainee_course.finish? %>
           <h4> You finished this course!</h4>
         <% elsif @trainee_course.started? %>
           <h4>You started</h4>
         <% else %>
-          <%= form_for @course do |f| %>
-              <h4><%= f.submit "Start Course", class: "btn btn-large btn-primary" %></h4>
+          <%= form_for @trainee_course, url: user_trainee_course_url(current_user,
+            @trainee_course) do |f| %>
+            <h4><%= f.submit "Start Course", class: "btn btn-large btn-primary" %></h4>
           <% end %>
         <% end %>
       <% else %>
@@ -41,7 +45,7 @@
     <div class="span6 offset3">
       <h4>Users in this Course</h4>
       <div>
-        <% @course.trainee_courses.each do |trainee_course| %>
+        <% course.trainee_courses.each do |trainee_course| %>
           <% user = trainee_course.user %>
           <%= link_to gravatar_for(user, size: 40), user %>
         <% end %>
@@ -53,12 +57,12 @@
           <div>
             <% if activity.object.finish? %>
               You finished
-              <%= @course.name %>
+              <%= course.name %>
               at
               <%= activity.created_at.to_date %>
             <% elsif activity.updating %>
               You started
-              <%= @course.name %>
+              <%= course.name %>
               at
               <%= activity.created_at.to_date %>
             <% end %>

@@ -1,17 +1,15 @@
-class SubjectsController < ApplicationController
+class UserSubjectsController < ApplicationController
   before_action :load_object
   before_action :correct_user
 
   def edit
-    @user_subject = @trainee_course.user_subjects.find_by_subject_id @subject.id
   end
   
   def update
-    @user_subject = @trainee_course.user_subjects.find_by_subject_id @subject.id
     if params[:commit] == "Start"
       unless @user_subject.started?
         @user_subject.start_at = Date.today.to_s
-        @subject.tasks.each do |task|
+        @user_subject.subject.tasks.each do |task|
           @user_subject.user_tasks.build(task_id: task.id,
             user_id: current_user.id)
         end
@@ -29,15 +27,14 @@ class SubjectsController < ApplicationController
 
   private
   
-   def user_subject_params
+    def user_subject_params
       params.require(:user_subject).permit(:start_at,  
         user_tasks_attributes:[:id, :user_id, :task_id, :user_subject_id, :finish])
     end
 
     def load_object
-      @course = Course.find params[:course_id]
-      @subject = Subject.find params[:id]
-      @trainee_course = current_user.trainee_courses.find_by_course_id @course.id
+      @trainee_course = current_user.trainee_courses.find params[:trainee_course_id]
+      @user_subject = current_user.user_subjects.find params[:id]
     end
 
     def correct_user

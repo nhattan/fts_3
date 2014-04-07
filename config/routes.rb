@@ -11,12 +11,16 @@ Fts3::Application.routes.draw do
   match "/signout", to: "sessions#destroy",      via: :delete
 
   resources "users"
-  resources "courses"
   resources "users" do
-    resources "courses" do
-      resources "subjects", only: [:show, :edit, :update]
+    resources "trainee_courses" do
+      resources "user_subjects", only: [:edit, :update]      
     end
   end
+
+  resources "courses" do
+    resources "course_subjects", only: [:show]
+  end
+  
   namespace :admin do
     match "/signin", to: "sessions#new",        via: :get
     match "/signout", to: "sessions#destroy",   via: :post
