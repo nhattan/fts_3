@@ -98,6 +98,7 @@ ActiveRecord::Schema.define(version: 20140321081021) do
     t.integer  "user_id"
     t.integer  "subject_id"
     t.integer  "trainee_course_id"
+    t.integer  "course_subject_id"
     t.datetime "start_at"
     t.boolean  "finish"
     t.datetime "created_at"

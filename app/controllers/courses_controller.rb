@@ -19,7 +19,7 @@ class CoursesController < ApplicationController
       trainee_course.start_at = Date.today.to_s
       @course.course_subjects.each do |course_subject|
         user_subject = trainee_course.user_subjects.build(subject_id: course_subject.subject_id,
-          user_id: current_user.id)
+          course_subject_id: course_subject.id, user_id: current_user.id)
       end
       if trainee_course.save
         flash[:success] = "Trainee course started"

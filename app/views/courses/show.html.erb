@@ -14,17 +14,17 @@
         <% else %>
           <% type_button = "btn btn-large btn-default" %> 
         <% end %>
-        <%= link_to subject.name, edit_user_course_subject_url(current_user, @course,
-          subject), class: type_button%>
       <% else %>
         <% type_button = "btn btn-large btn-default" %>
-        <%= link_to subject.name, user_course_subject_url(current_user, @course,
-          subject), class: type_button%>    
-      <% end %>      
+      <% end %>
+      <%= link_to subject.name, edit_user_course_subject_url(current_user, @course,
+        subject), class: type_button%>
     <% end %>
     <div>
       <% if @course.started? %>
-        <% if @trainee_course.started? %>
+        <% if @trainee_course.finish? %>
+          <h4> You finished this course!</h4>
+        <% elsif @trainee_course.started? %>
           <h4>You started</h4>
         <% else %>
           <%= form_for @course do |f| %>
