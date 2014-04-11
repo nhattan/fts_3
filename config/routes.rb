@@ -35,6 +35,9 @@ Fts3::Application.routes.draw do
       resources "course_subjects", only: [:show, :edit, :update]
       resources "trainee_courses", only: [:update]
     end
+    match "csvs", to: "csvs#index", via: :get
+    match "csvs/import", to: "csvs#import", via: :post
+    match "csvs/export", to: "csvs#export", via: :get
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
