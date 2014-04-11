@@ -15,17 +15,26 @@
     <% course = trainee_course.course %>
     <% if trainee_course.started? && trainee_course.finish? %>      
       <tr class="success">
-        <td><%= link_to course.name, course %></td>
+        <td>
+          <%= link_to course.name,
+            user_trainee_course_path(current_user, course) %>
+        </td>
         <td>finished</td>
       </tr>
     <% elsif trainee_course.started? && !trainee_course.finish? %>
       <tr class="error">
-        <td><%= link_to course.name, course %></td>
+       <td>
+          <%= link_to course.name,
+            user_trainee_course_path(current_user, course) %>
+        </td>
         <td>in progress</td>
       </tr>
     <% elsif trainee_course.started? %>
       <tr class="warning">
-        <td><%= link_to course.name, course %></td>
+        <td>
+          <%= link_to course.name,
+            user_trainee_course_path(current_user, course) %>
+        </td>
         <td>started</td>
       </tr>
     <% end %>
