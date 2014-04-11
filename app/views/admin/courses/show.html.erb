@@ -24,8 +24,22 @@
       <% end %>
     <% end %>
 
-    <div><%= link_to "Trainee in Courses", edit_admin_course_assign_trainees_path(@course) %></div>
-    <div><%= link_to "Supervisor in Courses", edit_admin_course_assign_supervisors_path(@course) %></div>
+    <div><%= link_to "Assigin Trainee", edit_admin_course_assign_trainees_path(@course) %></div>
+    <div><%= link_to "Assign Supervisor", edit_admin_course_assign_supervisors_path(@course) %></div>
+    <div class="view-hidden-trainee">Trainee in Course</div>
+    <div class="trainee-in-course">
+      <% @course.trainee_courses.each do |trainee_course| %>
+        <div>
+          <%= trainee_course.user.name %>
+          <% if trainee_course.finish? %>
+            finished
+          <% else %>
+          <%= link_to 'Accept finish',
+            admin_course_trainee_course_url(@course.id, trainee_course, finish: 1), method: :patch %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
 
     <h5>Users Activities</h5>
     <% @activities.each do |activity| %>
